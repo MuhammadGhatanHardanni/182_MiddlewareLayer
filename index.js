@@ -121,30 +121,25 @@ function validateParams(schema) {
 
 //METHOD GET
 
-app.get('/', async (req, res) => {
-    const result = await pool.query(
-        'SELECT * FROM biodata'
-    )
+app.get("/", async (req, res) => {
+  const result = await pool.query("SELECT * FROM biodata");
 
-    return successResponse(res, "Data Berhasil Diambil", result.rows);
-})
+  return successResponse(res, "Data Berhasil Diambil", result.rows);
+});
 
 //METHOD POST
 
-app.post(
-    '/biodata', 
-    validateBody(biodataSchema), 
-    async (req, res) => {
-        const { id, nama, nim, kelas } = req.body;
+app.post("/biodata", validateBody(biodataSchema), async (req, res) => {
+  const { id, nama, nim, kelas } = req.body;
 
-        const result = await pool.query(
-            `INSERT INTO biodata (id, nama, nim, kelas)
+  const result = await pool.query(
+    `INSERT INTO biodata (id, nama, nim, kelas)
             VALUES ($1, $2, $3, $4)
             RETURNING *`,
-            [id ?? null, nama, nim, kelas],
-        )
-        
-        return successResponse(res, "Data berhasil ditambahkan", result.rows[0], 201);
+    [id ?? null, nama, nim, kelas],
+  );
+
+  return successResponse(res, "Data berhasil ditambahkan", result.rows[0], 201);
 });
 
 //METHOD PUT
@@ -171,7 +166,7 @@ app.put(
     }
     return successResponse(res, "Data berhasil diupdate", result.rows[0]);
   },
-)
+);
 
 app.delete("/biodata/:id", validateParams(idSchema), async (req, res) => {
   const { id } = req.params;
@@ -183,4 +178,9 @@ app.delete("/biodata/:id", validateParams(idSchema), async (req, res) => {
     return errorResponse(res, "Data tidak ditemukan", 404);
   }
   return successResponse(res, "Data berhasil dihapus", result.rows[0]);
+});
+
+//ROUTE TIDAK DITEMUKAN
+app.use((req, res) => {
+  return errorResponse(res, "Route tidak ditemukan", 404);
 });
