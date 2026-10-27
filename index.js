@@ -35,3 +35,14 @@ app.use((req, res, next) => {
 
   next();
 });
+
+//RESUME ENVELOPE
+
+function successResponse(res, message, data, status = 200) {
+  return res.status(status).json({
+    success: true,
+    message,
+    data,
+    error: null,
+  });
+}
