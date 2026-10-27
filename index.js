@@ -146,3 +146,15 @@ app.post(
         
         return successResponse(res, "Data berhasil ditambahkan", result.rows[0], 201);
 });
+
+//METHOD PUT
+
+app.put(
+  "/biodata/:id",
+  validateParams(idSchema),
+  validateBody(
+    biodataSchema
+      .fork(["nama", "nim", "kelas"], (field) => field.required())
+      .fork(["id"], (field) => field.forbidden()),
+  ),
+)
