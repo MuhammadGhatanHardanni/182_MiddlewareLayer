@@ -118,3 +118,13 @@ function validateParams(schema) {
     next();
   };
 }
+
+//METHOD GET
+
+app.get('/', async (req, res) => {
+    const result = await pool.query(
+        'SELECT * FROM biodata'
+    )
+
+    return successResponse(res, "Data Berhasil Diambil", result.rows);
+})
