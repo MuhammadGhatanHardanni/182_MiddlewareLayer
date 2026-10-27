@@ -7,5 +7,9 @@ const port = 3000;
 const { Pool } = pg;
 
 const pool = new Pool({
-  
+  user: "postgres",
+  host: "localhost",
+  database: "mahasiswa",
+  password: "gtn433ni",
+  port: 5432,
 });
